@@ -1,4 +1,4 @@
-package br.com.nt.voteSystem.service;
+package br.com.nt.voteSystem.service.associate;
 
 import br.com.nt.voteSystem.base.ErrorDto;
 import br.com.nt.voteSystem.builder.BaseDtoErrorBuilder;
