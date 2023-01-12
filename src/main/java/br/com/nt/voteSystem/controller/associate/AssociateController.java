@@ -2,10 +2,7 @@ package br.com.nt.voteSystem.controller.associate;
 
 import br.com.nt.voteSystem.dto.associate.SaveAssociateDto;
 import br.com.nt.voteSystem.dto.associate.UpdateAssociateDto;
-import br.com.nt.voteSystem.service.associate.SaveAssociateService;
-import br.com.nt.voteSystem.service.associate.GetAllAssociateService;
-import br.com.nt.voteSystem.service.associate.GetOneAssociateService;
-import br.com.nt.voteSystem.service.associate.UpdateAssociateService;
+import br.com.nt.voteSystem.service.associate.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,15 +14,18 @@ public class AssociateController {
     private final GetOneAssociateService getOneAssociateService;
     private final GetAllAssociateService getAllAssociateService;
     private final UpdateAssociateService updateAssociateService;
+    private final DeleteAssociateService deleteAssociateService;
 
     public AssociateController(SaveAssociateService saveAssociateService,
                                GetOneAssociateService getOneAssociateService,
                                GetAllAssociateService getAllAssociateService,
-                               UpdateAssociateService updateAssociateService) {
+                               UpdateAssociateService updateAssociateService,
+                               DeleteAssociateService deleteAssociateService) {
         this.saveAssociateService = saveAssociateService;
         this.getOneAssociateService = getOneAssociateService;
         this.getAllAssociateService = getAllAssociateService;
         this.updateAssociateService = updateAssociateService;
+        this.deleteAssociateService = deleteAssociateService;
     }
 
     @PostMapping
@@ -47,5 +47,10 @@ public class AssociateController {
     public ResponseEntity updateAssociate(@PathVariable Long id,
                                           @RequestBody  UpdateAssociateDto dto){
         return updateAssociateService.execute(id, dto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteAssociate(@PathVariable Long id){
+        return deleteAssociateService.execute(id);
     }
 }
