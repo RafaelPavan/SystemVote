@@ -15,11 +15,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class AssociateService {
+public class SaveAssociateService {
 
     private final AssociateRepository associateRepository;
 
-    public AssociateService(AssociateRepository associateRepository) {
+    public SaveAssociateService(AssociateRepository associateRepository) {
         this.associateRepository = associateRepository;
     }
 
