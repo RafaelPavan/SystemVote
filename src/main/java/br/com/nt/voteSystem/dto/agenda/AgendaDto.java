@@ -2,14 +2,14 @@ package br.com.nt.voteSystem.dto.agenda;
 
 import br.com.nt.voteSystem.model.agenda.AgendaModel;
 
-public class SaveAgendaDto {
+public class AgendaDto {
 
     private String description;
 
-    public SaveAgendaDto() {
+    public AgendaDto() {
     }
 
-    public SaveAgendaDto(String description) {
+    public AgendaDto(String description) {
         this.description = description;
     }
 
@@ -21,7 +21,7 @@ public class SaveAgendaDto {
         this.description = description;
     }
 
-    public static AgendaModel transform(SaveAgendaDto dto){
+    public static AgendaModel transform(AgendaDto dto){
         AgendaModel model = new AgendaModel();
         model.setDescription(dto.getDescription());
         return model;
