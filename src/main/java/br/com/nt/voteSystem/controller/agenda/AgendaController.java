@@ -1,10 +1,7 @@
 package br.com.nt.voteSystem.controller.agenda;
 
 import br.com.nt.voteSystem.dto.agenda.AgendaDto;
-import br.com.nt.voteSystem.service.agenda.GetAllAgendaService;
-import br.com.nt.voteSystem.service.agenda.GetOneAgendaService;
-import br.com.nt.voteSystem.service.agenda.SaveAgendaService;
-import br.com.nt.voteSystem.service.agenda.UpdateAgendaService;
+import br.com.nt.voteSystem.service.agenda.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,15 +13,18 @@ public class AgendaController {
     private final UpdateAgendaService updateAgendaService;
     private final GetOneAgendaService getOneAgendaService;
     private final GetAllAgendaService getAllAgendaService;
+    private final DeleteAgendaService deleteAgendaService;
 
     public AgendaController(SaveAgendaService saveAgendaService,
                             UpdateAgendaService updateAgendaService,
                             GetOneAgendaService getOneAgendaService,
-                            GetAllAgendaService getAllAgendaService) {
+                            GetAllAgendaService getAllAgendaService,
+                            DeleteAgendaService deleteAgendaService) {
         this.saveAgendaService = saveAgendaService;
         this.updateAgendaService = updateAgendaService;
         this.getOneAgendaService = getOneAgendaService;
         this.getAllAgendaService = getAllAgendaService;
+        this.deleteAgendaService = deleteAgendaService;
     }
 
     @PostMapping
@@ -43,8 +43,13 @@ public class AgendaController {
     }
 
     @GetMapping
-    public ResponseEntity findAllAgenda(){
+    public ResponseEntity findAllAgendas(){
         return getAllAgendaService.execute();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteAgenda(@PathVariable Long id){
+        return deleteAgendaService.execute(id);
     }
 
 }
