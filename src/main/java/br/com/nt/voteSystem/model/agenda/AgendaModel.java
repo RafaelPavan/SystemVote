@@ -15,10 +15,15 @@ public class AgendaModel {
     public AgendaModel() {
     }
 
+    public AgendaModel(Long id) {
+        this.id = id;
+    }
+
     public AgendaModel(Long id, String description) {
         this.id = id;
         this.description = description;
     }
+
 
     public Long getId() {
         return id;

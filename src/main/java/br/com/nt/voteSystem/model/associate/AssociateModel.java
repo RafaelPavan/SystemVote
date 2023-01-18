@@ -22,6 +22,10 @@ public class AssociateModel {
     public AssociateModel() {
     }
 
+    public AssociateModel(Long id) {
+        Id = id;
+    }
+
     public AssociateModel(Long id, String name, String lastName, String cpf) {
         Id = id;
         this.name = name;
