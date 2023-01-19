@@ -96,4 +96,14 @@ public class VotingSessionModel {
     public void setTimeVotingOpening(LocalTime timeVotingOpening) {
         this.timeVotingOpening = timeVotingOpening;
     }
+
+    @Override
+    public String toString() {
+        return "VotingSessionId=" + id +
+                ", " + associateId +
+                ", " + agendaId +
+                ", vote=" + vote +
+                ", dateVotingOpening=" + dateVotingOpening +
+                ", timeVotingOpening=" + timeVotingOpening ;
+    }
 }

@@ -40,4 +40,9 @@ public class AgendaModel {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public String toString() {
+        return "AgendaId=" + id + ", description='" + description + '\'' ;
+    }
 }
