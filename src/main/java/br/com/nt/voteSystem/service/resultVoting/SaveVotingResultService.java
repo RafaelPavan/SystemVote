@@ -2,7 +2,6 @@ package br.com.nt.voteSystem.service.resultVoting;
 
 import br.com.nt.voteSystem.builder.BaseDtoErrorBuilder;
 import br.com.nt.voteSystem.builder.BaseDtoSuccessBuilder;
-import br.com.nt.voteSystem.dto.resultVoting.SaveVotingResultDto;
 import br.com.nt.voteSystem.model.agenda.AgendaModel;
 import br.com.nt.voteSystem.model.votingResult.FinalResult;
 import br.com.nt.voteSystem.model.votingResult.VotingResultModel;
@@ -11,17 +10,14 @@ import br.com.nt.voteSystem.repository.agenda.AgendaRepository;
 import br.com.nt.voteSystem.repository.resultVoting.VotingResultRepository;
 import br.com.nt.voteSystem.repository.votingSession.VotingSessionRepository;
 import br.com.nt.voteSystem.service.votingSession.VoteEnum;
-import br.com.nt.voteSystem.service.votingSession.VotingStatus;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class SaveVotingResultService {
@@ -85,7 +81,10 @@ public class SaveVotingResultService {
         model.setVotesQuantity((long) votes.size());
         if (prosVotes.size() > consVotes.size()){
             model.setFinalResult(FinalResult.APROVADA);
-        }else model.setFinalResult(FinalResult.REPROVADA);
+        } else if (prosVotes.size() == consVotes.size()) {
+            model.setFinalResult(FinalResult.EMPATADA);
+        } else model.setFinalResult(FinalResult.REPROVADA);
+        ;
 
 
         votingResultRepository.save(model);
