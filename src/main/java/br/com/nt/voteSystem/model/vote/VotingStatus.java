@@ -1,4 +1,4 @@
-package br.com.nt.voteSystem.service.votingSession;
+package br.com.nt.voteSystem.model.vote;
 
 public enum VotingStatus {
     EM_ANDAMENTO,

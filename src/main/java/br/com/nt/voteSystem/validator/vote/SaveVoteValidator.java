@@ -1,15 +1,14 @@
-package br.com.nt.voteSystem.validator.votingSession;
+package br.com.nt.voteSystem.validator.vote;
 
 import br.com.nt.voteSystem.base.ErrorDto;
-import br.com.nt.voteSystem.dto.votingSession.SaveVotingSessionDto;
+import br.com.nt.voteSystem.dto.vote.VoteDto;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-public class SaveVotingSessionValidator {
+public class SaveVoteValidator {
 
-    public static List<ErrorDto> execute(SaveVotingSessionDto dto) {
+    public static List<ErrorDto> execute(VoteDto dto) {
         List<ErrorDto> error = new ArrayList<>();
 
         if(dto.getAssociateId() == null){

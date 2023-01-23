@@ -1,48 +1,49 @@
-package br.com.nt.voteSystem.service.votingSession;
+package br.com.nt.voteSystem.service.vote;
 
 import br.com.nt.voteSystem.base.ErrorDto;
 import br.com.nt.voteSystem.builder.BaseDtoErrorBuilder;
 import br.com.nt.voteSystem.builder.BaseDtoSuccessBuilder;
-import br.com.nt.voteSystem.dto.associate.SaveAssociateDto;
-import br.com.nt.voteSystem.dto.votingSession.SaveVotingSessionDto;
+import br.com.nt.voteSystem.dto.vote.VoteDto;
 import br.com.nt.voteSystem.model.agenda.AgendaModel;
 import br.com.nt.voteSystem.model.associate.AssociateModel;
+import br.com.nt.voteSystem.model.vote.VoteModel;
 import br.com.nt.voteSystem.model.votingSession.VotingSessionModel;
 import br.com.nt.voteSystem.repository.agenda.AgendaRepository;
 import br.com.nt.voteSystem.repository.associate.AssociateRepository;
+import br.com.nt.voteSystem.repository.vote.VoteRepository;
 import br.com.nt.voteSystem.repository.votingSession.VotingSessionRepository;
-import br.com.nt.voteSystem.validator.votingSession.SaveVotingSessionValidator;
-import com.fasterxml.jackson.annotation.JsonFormat;
+import br.com.nt.voteSystem.validator.vote.SaveVoteValidator;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
-public class SaveVotingSessionService {
+public class SaveVoteService {
 
     private final AssociateRepository associateRepository;
     private final AgendaRepository agendaRepository;
+    private final VoteRepository voteRepository;
     private final VotingSessionRepository votingSessionRepository;
 
-    public SaveVotingSessionService(AssociateRepository associateRepository,
-                                    AgendaRepository agendaRepository,
-                                    VotingSessionRepository votingSessionRepository) {
+    public SaveVoteService(AssociateRepository associateRepository,
+                           AgendaRepository agendaRepository,
+                           VoteRepository voteRepository,
+                           VotingSessionRepository votingSessionRepository) {
         this.associateRepository = associateRepository;
         this.agendaRepository = agendaRepository;
+        this.voteRepository = voteRepository;
         this.votingSessionRepository = votingSessionRepository;
     }
 
     @Transactional
-    public ResponseEntity execute(SaveVotingSessionDto dto) {
+    public ResponseEntity execute(VoteDto dto, @RequestParam Long timeVoting) {
 
-        List<ErrorDto> errors = SaveVotingSessionValidator.execute(dto);
+        List<ErrorDto> errors = SaveVoteValidator.execute(dto);
 
         if (!errors.isEmpty()){
             BaseDtoErrorBuilder builder = new BaseDtoErrorBuilder(HttpStatus.BAD_REQUEST);
@@ -65,19 +66,31 @@ public class SaveVotingSessionService {
         AssociateModel associateModel = associateRepository.getReferenceById(dto.getAssociateId());
         AgendaModel agendaModel = agendaRepository.getReferenceById(dto.getAgendaId());
 
-        if(votingSessionRepository.existsVotingSessionModelByAssociateIdAndAgendaId(associateModel, agendaModel)){
+        if(voteRepository.existsVotingSessionModelByAssociateIdAndAgendaId(associateModel, agendaModel)){
             BaseDtoErrorBuilder builder = new BaseDtoErrorBuilder(HttpStatus.CONFLICT);
             builder.addError(null, "Associado já votou na pauta");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(builder.get());
         }
 
+        VotingSessionModel sessionModel = votingSessionRepository.findByAgendaId(agendaModel);
+        VoteModel model = VoteDto.transform(dto);
+        model.setVoteTime(LocalTime.now());
 
 
+        if (sessionModel == null){
+            BaseDtoErrorBuilder builder = new BaseDtoErrorBuilder(HttpStatus.CONFLICT);
+            builder.addError(null, "Votação não iniciada.");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(builder.get());
 
-        VotingSessionModel model = SaveVotingSessionDto.transform(dto);
-        model.setVote(VoteEnum.valueOf(dto.getVote().toString().toUpperCase()));
-        votingSessionRepository.save(model);
-//        System.out.println(model.getId());
+        }
+
+        voteRepository.save(model);
+
+        if (model.getVoteTime().isAfter(sessionModel.getTimeVotingClosing())){
+            BaseDtoErrorBuilder builder = new BaseDtoErrorBuilder(HttpStatus.CONFLICT);
+            builder.addError(null, "Pauta expirou tempo de votação");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(builder.get());
+        }
 
 
         return ResponseEntity.status(HttpStatus.CREATED)

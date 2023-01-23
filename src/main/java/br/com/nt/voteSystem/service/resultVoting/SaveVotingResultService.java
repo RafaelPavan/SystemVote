@@ -5,11 +5,11 @@ import br.com.nt.voteSystem.builder.BaseDtoSuccessBuilder;
 import br.com.nt.voteSystem.model.agenda.AgendaModel;
 import br.com.nt.voteSystem.model.votingResult.FinalResult;
 import br.com.nt.voteSystem.model.votingResult.VotingResultModel;
-import br.com.nt.voteSystem.model.votingSession.VotingSessionModel;
+import br.com.nt.voteSystem.model.vote.VoteModel;
 import br.com.nt.voteSystem.repository.agenda.AgendaRepository;
 import br.com.nt.voteSystem.repository.resultVoting.VotingResultRepository;
-import br.com.nt.voteSystem.repository.votingSession.VotingSessionRepository;
-import br.com.nt.voteSystem.service.votingSession.VoteEnum;
+import br.com.nt.voteSystem.repository.vote.VoteRepository;
+import br.com.nt.voteSystem.model.vote.VoteEnum;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,14 +23,14 @@ import java.util.Objects;
 public class SaveVotingResultService {
 
     private final AgendaRepository agendaRepository;
-    private final VotingSessionRepository votingSessionRepository;
+    private final VoteRepository voteRepository;
     private final VotingResultRepository votingResultRepository;
 
     public SaveVotingResultService(AgendaRepository agendaRepository,
-                                   VotingSessionRepository votingSessionRepository,
+                                   VoteRepository voteRepository,
                                    VotingResultRepository votingResultRepository) {
         this.agendaRepository = agendaRepository;
-        this.votingSessionRepository = votingSessionRepository;
+        this.voteRepository = voteRepository;
         this.votingResultRepository = votingResultRepository;
     }
 
@@ -45,15 +45,15 @@ public class SaveVotingResultService {
 
 
         AgendaModel agendaModel = agendaRepository.getReferenceById(id);
-        List<VotingSessionModel> allVotes = votingSessionRepository.findAll();
-        List<VotingSessionModel> votes = new ArrayList<>();
+        List<VoteModel> allVotes = voteRepository.findAll();
+        List<VoteModel> votes = new ArrayList<>();
 
         if(votingResultRepository.existsAgendaByAgendaId(agendaModel)){
             BaseDtoErrorBuilder builder = new BaseDtoErrorBuilder(HttpStatus.CONFLICT);
             builder.addError("agendaId", "Esta pauta já está com a votação encerrada.");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(builder.get());
         }
-        for(VotingSessionModel voting : allVotes){
+        for(VoteModel voting : allVotes){
             if (Objects.equals(voting.getAgendaId().getId(), agendaModel.getId())) {
                 votes.add(voting);
             }

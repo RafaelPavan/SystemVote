@@ -1,25 +1,23 @@
 package br.com.nt.voteSystem.controller.votingSession;
 
-import br.com.nt.voteSystem.dto.votingSession.SaveVotingSessionDto;
-import br.com.nt.voteSystem.service.votingSession.SaveVotingSessionService;
+import br.com.nt.voteSystem.dto.votingSession.VotingSessionDto;
+import br.com.nt.voteSystem.model.vote.VotingStatus;
+import br.com.nt.voteSystem.service.votingSession.VotingSessionService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/voting")
+@RequestMapping("/votingSession")
 public class VotingSessionController {
-    private final SaveVotingSessionService saveVotingSessionService;
+    private final VotingSessionService votingSessionService;
 
-    public VotingSessionController(SaveVotingSessionService saveVotingSessionService) {
-        this.saveVotingSessionService = saveVotingSessionService;
+    public VotingSessionController(VotingSessionService votingSessionService) {
+        this.votingSessionService = votingSessionService;
     }
 
     @PostMapping
-    public ResponseEntity saveVotingSession(@RequestBody SaveVotingSessionDto dto){
-        return saveVotingSessionService.execute(dto);
+    public ResponseEntity execute (@RequestParam(required = false) Long timeVoting,
+                                   @RequestBody VotingSessionDto dto){
+        return votingSessionService.execute(timeVoting, dto);
     }
-
 }
