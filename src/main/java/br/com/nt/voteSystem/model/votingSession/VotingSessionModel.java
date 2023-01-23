@@ -1,51 +1,50 @@
 package br.com.nt.voteSystem.model.votingSession;
 
 import br.com.nt.voteSystem.model.agenda.AgendaModel;
-import br.com.nt.voteSystem.model.associate.AssociateModel;
-import br.com.nt.voteSystem.service.votingSession.VoteEnum;
+import br.com.nt.voteSystem.model.vote.VotingStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 
-import java.time.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Table(name = "votingSession")
 public class VotingSessionModel {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "FkAssociate", referencedColumnName = "id")
-    private AssociateModel associateId;
-
-    @OneToOne
     @JoinColumn(name = "FkAgenda", referencedColumnName = "id")
     private AgendaModel agendaId;
-
-    @Enumerated(EnumType.STRING)
-    private VoteEnum vote;
-
 
     private LocalDate dateVotingOpening = LocalDate.now();
 
     @JsonFormat(pattern = "HH:mm:ss")
-    private LocalTime timeVotingOpening = LocalTime.now(ZoneId.of("America/Sao_Paulo"));
+    private LocalTime timeVotingOpening ;
+
+    private LocalTime timeVotingClosing;
+
+    private Long timeVoting;
+
+    @Enumerated(EnumType.STRING)
+    private VotingStatus votingStatus = VotingStatus.EM_ANDAMENTO;
 
     public VotingSessionModel() {
     }
 
-    public VotingSessionModel(Long id, AssociateModel associateId, AgendaModel agendaId,
-                              VoteEnum vote, LocalDate dateVotingOpening,
-                              LocalTime timeVotingOpening) {
+    public VotingSessionModel(Long id, AgendaModel agendaId, LocalDate dateVotingOpening,
+                              LocalTime timeVotingOpening, LocalTime timeVotingClosing,
+                              Long timeVoting, VotingStatus votingStatus) {
         this.id = id;
-        this.associateId = associateId;
         this.agendaId = agendaId;
-        this.vote = vote;
         this.dateVotingOpening = dateVotingOpening;
         this.timeVotingOpening = timeVotingOpening;
+        this.timeVotingClosing = timeVotingClosing;
+        this.timeVoting = timeVoting;
+        this.votingStatus = votingStatus;
     }
 
     public Long getId() {
@@ -56,29 +55,12 @@ public class VotingSessionModel {
         this.id = id;
     }
 
-    public AssociateModel getAssociateId() {
-        return associateId;
-    }
-
-    public void setAssociateId(AssociateModel associateId) {
-        this.associateId = associateId;
-    }
-
     public AgendaModel getAgendaId() {
         return agendaId;
     }
 
     public void setAgendaId(AgendaModel agendaId) {
         this.agendaId = agendaId;
-    }
-
-    public VoteEnum getVote() {
-        return vote;
-    }
-
-    public void setVote(VoteEnum vote) {
-        this.vote = vote;
-
     }
 
     public LocalDate getDateVotingOpening() {
@@ -97,13 +79,27 @@ public class VotingSessionModel {
         this.timeVotingOpening = timeVotingOpening;
     }
 
-    @Override
-    public String toString() {
-        return "VotingSessionId=" + id +
-                ", " + associateId +
-                ", " + agendaId +
-                ", vote=" + vote +
-                ", dateVotingOpening=" + dateVotingOpening +
-                ", timeVotingOpening=" + timeVotingOpening ;
+    public LocalTime getTimeVotingClosing() {
+        return timeVotingClosing;
+    }
+
+    public void setTimeVotingClosing(LocalTime timeVotingClosing) {
+        this.timeVotingClosing = timeVotingClosing;
+    }
+
+    public Long getTimeVoting() {
+        return timeVoting;
+    }
+
+    public void setTimeVoting(Long timeVoting) {
+        this.timeVoting = timeVoting;
+    }
+
+    public VotingStatus getVotingStatus() {
+        return votingStatus;
+    }
+
+    public void setVotingStatus(VotingStatus votingStatus) {
+        this.votingStatus = votingStatus;
     }
 }

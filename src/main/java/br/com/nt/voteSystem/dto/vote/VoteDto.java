@@ -1,14 +1,11 @@
-package br.com.nt.voteSystem.dto.votingSession;
+package br.com.nt.voteSystem.dto.vote;
 
 import br.com.nt.voteSystem.model.agenda.AgendaModel;
 import br.com.nt.voteSystem.model.associate.AssociateModel;
-import br.com.nt.voteSystem.model.votingSession.VotingSessionModel;
-import br.com.nt.voteSystem.service.votingSession.VoteEnum;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import br.com.nt.voteSystem.model.vote.VoteModel;
+import br.com.nt.voteSystem.model.vote.VoteEnum;
 
-import java.util.Arrays;
-
-public class SaveVotingSessionDto {
+public class VoteDto {
 
     private Long associateId;
 
@@ -16,10 +13,10 @@ public class SaveVotingSessionDto {
 
     private VoteEnum vote;
 
-    public SaveVotingSessionDto() {
+    public VoteDto() {
     }
 
-    public SaveVotingSessionDto(Long associateId, Long agendaId, VoteEnum vote) {
+    public VoteDto(Long associateId, Long agendaId, VoteEnum vote) {
         this.associateId = associateId;
         this.agendaId = agendaId;
         this.vote = vote;
@@ -49,8 +46,8 @@ public class SaveVotingSessionDto {
         this.vote = vote;
     }
 
-    public static VotingSessionModel transform (SaveVotingSessionDto dto){
-        VotingSessionModel model = new VotingSessionModel();
+    public static VoteModel transform (VoteDto dto){
+        VoteModel model = new VoteModel();
         model.setAssociateId(new AssociateModel(dto.getAssociateId()));
         model.setAgendaId(new AgendaModel(dto.getAgendaId()));
         model.setVote(dto.getVote());
