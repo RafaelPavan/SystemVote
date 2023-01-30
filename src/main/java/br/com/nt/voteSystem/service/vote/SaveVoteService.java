@@ -13,7 +13,7 @@ import br.com.nt.voteSystem.repository.associate.AssociateRepository;
 import br.com.nt.voteSystem.repository.vote.VoteRepository;
 import br.com.nt.voteSystem.repository.votingSession.VotingSessionRepository;
 import br.com.nt.voteSystem.validator.vote.SaveVoteValidator;
-import jakarta.transaction.Transactional;
+import javax.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

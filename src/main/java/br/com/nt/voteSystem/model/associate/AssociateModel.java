@@ -1,44 +1,45 @@
 package br.com.nt.voteSystem.model.associate;
 
-import jakarta.persistence.*;
+
+import javax.persistence.*;
 
 @Entity
-@Table(name = "Associate")
+@Table(name = "associate")
 public class AssociateModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
-    @Column(name = "name", length = 100)
+    @Column(length = 100)
     private String name;
 
     @Column(name = "last_name", length = 100)
     private String lastName;
 
-    @Column(name = "cpf", length = 11)
+    @Column(length = 11)
     private String cpf;
 
     public AssociateModel() {
     }
 
     public AssociateModel(Long id) {
-        Id = id;
+        this.id = id;
     }
 
     public AssociateModel(Long id, String name, String lastName, String cpf) {
-        Id = id;
+        this.id = id;
         this.name = name;
         this.lastName = lastName;
         this.cpf = cpf;
     }
 
     public Long getId() {
-        return Id;
+        return id;
     }
 
     public void setId(Long id) {
-        Id = id;
+        this.id = id;
     }
 
     public String getName() {
@@ -65,8 +66,6 @@ public class AssociateModel {
         this.cpf = cpf;
     }
 
-    @Override
-    public String toString() {
-        return  "AssociateId=" + Id ;
-    }
+
 }
+

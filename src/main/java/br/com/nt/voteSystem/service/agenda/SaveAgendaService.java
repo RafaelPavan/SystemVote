@@ -7,11 +7,11 @@ import br.com.nt.voteSystem.dto.agenda.AgendaDto;
 import br.com.nt.voteSystem.model.agenda.AgendaModel;
 import br.com.nt.voteSystem.repository.agenda.AgendaRepository;
 import br.com.nt.voteSystem.validator.agenda.SaveAgendaValidator;
-import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service

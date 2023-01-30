@@ -1,7 +1,7 @@
 package br.com.nt.voteSystem.model.votingResult;
 
 import br.com.nt.voteSystem.model.agenda.AgendaModel;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "votingResult")

@@ -7,7 +7,7 @@ import br.com.nt.voteSystem.dto.associate.UpdateAssociateDto;
 import br.com.nt.voteSystem.model.associate.AssociateModel;
 import br.com.nt.voteSystem.repository.associate.AssociateRepository;
 import br.com.nt.voteSystem.validator.associate.UpdateAssociateValidator;
-import jakarta.transaction.Transactional;
+import javax.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

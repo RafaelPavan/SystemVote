@@ -1,7 +1,6 @@
 package br.com.nt.voteSystem.dto.votingSession;
 
 import br.com.nt.voteSystem.model.agenda.AgendaModel;
-import br.com.nt.voteSystem.model.associate.AssociateModel;
 import br.com.nt.voteSystem.model.votingSession.VotingSessionModel;
 
 public class VotingSessionDto {

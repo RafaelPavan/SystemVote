@@ -3,10 +3,12 @@ package br.com.nt.voteSystem.service.associate;
 import br.com.nt.voteSystem.builder.BaseDtoErrorBuilder;
 import br.com.nt.voteSystem.builder.BaseDtoSuccessBuilder;
 import br.com.nt.voteSystem.repository.associate.AssociateRepository;
-import jakarta.transaction.Transactional;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
 
 @Service
 public class DeleteAssociateService {

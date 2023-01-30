@@ -2,16 +2,12 @@ package br.com.nt.voteSystem.service.agenda;
 
 import br.com.nt.voteSystem.builder.BaseDtoErrorBuilder;
 import br.com.nt.voteSystem.builder.BaseDtoSuccessBuilder;
-import br.com.nt.voteSystem.dto.agenda.GetAgendaDto;
-import br.com.nt.voteSystem.model.agenda.AgendaModel;
 import br.com.nt.voteSystem.repository.agenda.AgendaRepository;
-import jakarta.persistence.Id;
-import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import javax.transaction.Transactional;
 
 @Service
 public class DeleteAgendaService {

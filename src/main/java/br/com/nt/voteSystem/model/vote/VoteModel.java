@@ -3,7 +3,7 @@ package br.com.nt.voteSystem.model.vote;
 import br.com.nt.voteSystem.model.agenda.AgendaModel;
 import br.com.nt.voteSystem.model.associate.AssociateModel;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 import java.time.*;
 

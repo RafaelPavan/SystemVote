@@ -10,7 +10,7 @@ import br.com.nt.voteSystem.repository.agenda.AgendaRepository;
 import br.com.nt.voteSystem.repository.resultVoting.VotingResultRepository;
 import br.com.nt.voteSystem.repository.vote.VoteRepository;
 import br.com.nt.voteSystem.model.vote.VoteEnum;
-import jakarta.transaction.Transactional;
+import javax.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class SaveVotingResultService {
@@ -59,19 +60,13 @@ public class SaveVotingResultService {
             }
         }
 
-        List<Object> prosVotes = new ArrayList<>(
-                votes.stream()
-                        .filter(v -> v.getAgendaId().getId().equals(id))
-                        .filter(p -> p.getVote().equals(VoteEnum.SIM))
-                        .toList()
-        );
+        List<Object> prosVotes = votes.stream()
+                .filter(v -> v.getAgendaId().getId().equals(id))
+                .filter(p -> p.getVote().equals(VoteEnum.SIM)).collect(Collectors.toList());
 
-        List<Object> consVotes = new ArrayList<>(
-                votes.stream()
-                        .filter(v -> v.getAgendaId().getId().equals(id))
-                        .filter(p -> p.getVote().equals(VoteEnum.NAO))
-                        .toList()
-        );
+        List<Object> consVotes = votes.stream()
+                .filter(v -> v.getAgendaId().getId().equals(id))
+                .filter(p -> p.getVote().equals(VoteEnum.NAO)).collect(Collectors.toList());
 
 
         VotingResultModel model = new VotingResultModel();

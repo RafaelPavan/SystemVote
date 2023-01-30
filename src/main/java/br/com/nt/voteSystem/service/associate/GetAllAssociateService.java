@@ -5,7 +5,6 @@ import br.com.nt.voteSystem.dto.associate.GetAssociateDto;
 import br.com.nt.voteSystem.model.associate.AssociateModel;
 import br.com.nt.voteSystem.repository.associate.AssociateRepository;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
