@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Timer;
@@ -30,6 +31,7 @@ public class VotingSessionService {
         this.agendaRepository = agendaRepository;
     }
 
+    @Transactional
     public ResponseEntity execute(Long timeVoting, VotingSessionDto dto) {
         List<ErrorDto> errors = VotingSessionValidador.execute(dto);
 
@@ -56,9 +58,9 @@ public class VotingSessionService {
             model.setTimeVotingClosing(LocalTime.now().plusMinutes(1L));
         }
 
-        AgendaModel agendaModel = agendaRepository.getReferenceById(dto.getAgendaId().getId());
         sessionTime(model);
 
+        AgendaModel agendaModel = agendaRepository.getReferenceById(dto.getAgendaId().getId());
         votingSessionRepository.save(model);
 
         return ResponseEntity.status(HttpStatus.OK)

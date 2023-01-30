@@ -1,6 +1,6 @@
 package br.com.nt.voteSystem.model.agenda;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "agenda")
