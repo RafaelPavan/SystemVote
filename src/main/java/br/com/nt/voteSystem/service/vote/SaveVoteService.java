@@ -73,10 +73,6 @@ public class SaveVoteService {
         }
 
         VotingSessionModel sessionModel = votingSessionRepository.findByAgendaId(agendaModel);
-        VoteModel model = VoteDto.transform(dto);
-        model.setVoteTime(LocalTime.now());
-
-
         if (sessionModel == null){
             BaseDtoErrorBuilder builder = new BaseDtoErrorBuilder(HttpStatus.CONFLICT);
             builder.addError(null, "Votação não iniciada.");
@@ -84,14 +80,16 @@ public class SaveVoteService {
 
         }
 
+        VoteModel model = VoteDto.transform(dto);
+        model.setVoteTime(LocalTime.now());
+
         if (model.getVoteTime().isAfter(sessionModel.getTimeVotingClosing())){
             BaseDtoErrorBuilder builder = new BaseDtoErrorBuilder(HttpStatus.CONFLICT);
             builder.addError(null, "Pauta expirou tempo de votação");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(builder.get());
         }
+
         voteRepository.save(model);
-
-
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new BaseDtoSuccessBuilder<>("Voto salvo com sucesso",
