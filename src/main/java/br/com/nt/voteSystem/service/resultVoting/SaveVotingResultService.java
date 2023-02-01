@@ -11,6 +11,9 @@ import br.com.nt.voteSystem.repository.resultVoting.VotingResultRepository;
 import br.com.nt.voteSystem.repository.vote.VoteRepository;
 import br.com.nt.voteSystem.model.vote.VoteEnum;
 import javax.transaction.Transactional;
+
+import com.sun.xml.bind.v2.util.StackRecorder;
+import org.springframework.boot.autoconfigure.kafka.StreamsBuilderFactoryBeanCustomizer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class SaveVotingResultService {
@@ -44,20 +48,16 @@ public class SaveVotingResultService {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(builder.get());
         }
 
-
         AgendaModel agendaModel = agendaRepository.getReferenceById(id);
         List<VoteModel> allVotes = voteRepository.findAll();
-        List<VoteModel> votes = new ArrayList<>();
+        List<VoteModel> votes = allVotes.stream()
+                .filter(voteModel -> Objects.equals(voteModel.getAgendaId().getId(),
+                        agendaModel.getId())).collect(Collectors.toList());
 
         if(votingResultRepository.existsAgendaByAgendaId(agendaModel)){
             BaseDtoErrorBuilder builder = new BaseDtoErrorBuilder(HttpStatus.CONFLICT);
             builder.addError("agendaId", "Esta pauta já está com a votação encerrada.");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(builder.get());
-        }
-        for(VoteModel voting : allVotes){
-            if (Objects.equals(voting.getAgendaId().getId(), agendaModel.getId())) {
-                votes.add(voting);
-            }
         }
 
         List<Object> prosVotes = votes.stream()
@@ -74,15 +74,15 @@ public class SaveVotingResultService {
         model.setProsVotes(prosVotes.size());
         model.setConsVotes(consVotes.size());
         model.setVotesQuantity((long) votes.size());
+
         if (prosVotes.size() > consVotes.size()){
             model.setFinalResult(FinalResult.APROVADA);
         } else if (prosVotes.size() == consVotes.size()) {
             model.setFinalResult(FinalResult.EMPATADA);
         } else model.setFinalResult(FinalResult.REPROVADA);
-        ;
-
 
         votingResultRepository.save(model);
+
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new BaseDtoSuccessBuilder<>(model.getFinalResult(),
                 HttpStatus.OK).get());
