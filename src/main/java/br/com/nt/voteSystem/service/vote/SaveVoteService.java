@@ -84,13 +84,13 @@ public class SaveVoteService {
 
         }
 
-        voteRepository.save(model);
-
         if (model.getVoteTime().isAfter(sessionModel.getTimeVotingClosing())){
             BaseDtoErrorBuilder builder = new BaseDtoErrorBuilder(HttpStatus.CONFLICT);
             builder.addError(null, "Pauta expirou tempo de votação");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(builder.get());
         }
+        voteRepository.save(model);
+
 
 
         return ResponseEntity.status(HttpStatus.CREATED)
